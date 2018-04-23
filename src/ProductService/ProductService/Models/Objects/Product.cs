@@ -8,7 +8,7 @@ namespace ProductService.Objects {
         public string Description { get; set; }
         public string Supplier { get; set; }
         public string Vendor { get; set; }
-        [JsonProperty(PropertyName = "vendor_part_numbe")]
+        [JsonProperty(PropertyName = "vendor_part_number")]
         public int VendorPartNumber { get; set; }
         [JsonProperty(PropertyName = "vendor_description")]
         public string VendorDescription { get; set; }
