@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ProductService.Models.Objects;
 using ProductService.Objects;
 
 namespace ProductService.Models {
@@ -19,7 +20,7 @@ namespace ProductService.Models {
         public async Task<List<Product>> GetAllProducts() {
             var result = new List<Product>();
 
-            var data = await GetDateByPageNumber();
+            var data = await GetDateByPageNumber(0);
             while (data.Next != null) {
                 foreach (var product in data.Products) {
                     result.Add(product);
@@ -35,20 +36,21 @@ namespace ProductService.Models {
             return result;
         }
 
-        private async Task<ResponseWrapper> GetDateByPageNumber(int pageNum = 20) {
-            string url = $"{_baseUrl}{pageNum}";
+        private async Task<ApiResponseWrapper> GetDateByPageNumber(int pageNum) {
+            var url = pageNum == 0 ? _baseUrl : $"{_baseUrl}{pageNum}";
+             
             var data = await SendRequest(url);
             return data;
         }
 
-        private async Task<ResponseWrapper> SendRequest(string url) {
+        private async Task<ApiResponseWrapper> SendRequest(string url) {
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode) {
                 throw new HttpRequestException($"Unsuccessful request: statusCode = {response.StatusCode}");
             }
 
             string responseStr = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseWrapper>(responseStr);
+            return JsonConvert.DeserializeObject<ApiResponseWrapper>(responseStr);
         }
     }
 }
