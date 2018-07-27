@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Tools extends React.Component {
+export default class Tools extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -15,6 +15,3 @@ class Tools extends React.Component {
         )
     }
 }
-
-
-module.exports = Tools;

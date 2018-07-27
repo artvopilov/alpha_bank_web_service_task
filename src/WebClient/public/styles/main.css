@@ -160,3 +160,10 @@ html {
     color: darkgray;
 }
 
+.warning {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 20px;
+    color: red;
+    font-weight: bold;
+}

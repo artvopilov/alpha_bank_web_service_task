@@ -1,9 +1,24 @@
 import React from 'react';
 import ProductInfo from './ProductInfo';
 
-class Products extends React.Component {
+export default class Products extends React.Component {
     constructor(props) {
         super(props)
+    }
+
+    defineClassForPrice(price) {
+        return price > this.props.avgPrice * 1.2 ? 'expensive' : (price <
+        this.props.avgPrice * 0.8 ? 'cheap' : '');
+    }
+
+    createProductInfo(prod) {
+        return (
+            <ProductInfo name={prod.name} description={prod.description} part_number={prod.part_number}
+                         price={prod.price} supplier={prod.supplier} image={prod.image} vendor={prod.vendor}
+                         vendor_description={prod.vendor_description}
+                         vendor_part_number={prod.vendor_part_number}
+                         classP={this.defineClassForPrice(prod.price)}/>
+        );
     }
 
     render() {
@@ -19,20 +34,10 @@ class Products extends React.Component {
                     <th className="product-image">Image</th>
                 </tr>
                 {this.props.products.length > 0 ? <tbody>{this.props.products.map(prod => {
-                    return (
-                        <ProductInfo name={prod.name} description={prod.description} part_number={prod.part_number}
-                                     price={prod.price} supplier={prod.supplier} image={prod.image} vendor={prod.vendor}
-                                     vendor_description={prod.vendor_description}
-                                     vendor_part_number={prod.vendor_part_number}
-                                     classP={prod.price > this.props.avgPrice * 1.2 ? 'expensive' : (prod.price <
-                                     this.props.avgPrice * 0.8 ? 'cheap' : '')}/>
-                    )
+                    return this.createProductInfo(prod);
                 })}
                 </tbody> : ''}
             </table>
         )
     }
 }
-
-
-module.exports = Products;

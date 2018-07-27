@@ -20,14 +20,12 @@ namespace ProductService.Models {
         public async Task<List<Product>> GetAllProducts() {
             var result = new List<Product>();
 
-            var data = await GetDateByPageNumber(0);
+            var data = await GetDataByPageNumber(0);
             while (data.Next != null) {
-                foreach (var product in data.Products) {
-                    result.Add(product);
-                }
+                result.AddRange(data.Products);
 
                 var pageNum = int.Parse(data.Next.Split('/').Reverse().ToArray()[0]);
-                data = await GetDateByPageNumber(pageNum);
+                data = await GetDataByPageNumber(pageNum);
             }
             
             foreach (var product in data.Products) {
@@ -36,7 +34,7 @@ namespace ProductService.Models {
             return result;
         }
 
-        private async Task<ApiResponseWrapper> GetDateByPageNumber(int pageNum) {
+        private async Task<ApiResponseWrapper> GetDataByPageNumber(int pageNum) {
             var url = pageNum == 0 ? _baseUrl : $"{_baseUrl}{pageNum}";
              
             var data = await SendRequest(url);

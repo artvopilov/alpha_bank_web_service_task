@@ -5,7 +5,7 @@ import StatusBar from './StatusBar'
 import ProductsInfo from './Products'
 import Tools from './Tools'
 
-class App extends React.Component {
+export default class App extends React.Component {
     constructor(props) {
         super(props);
 
@@ -15,8 +15,13 @@ class App extends React.Component {
             maxPrice: 0,
             minPrice: 0,
             avgPrice: 0,
-            pageNum: 0
+            pageNum: 0,
+            error: false,
+            errorMessage: false
         };
+
+        this.onNextPage = this.onNextPage.bind(this);
+        this.onPreviousPage = this.onPreviousPage.bind(this);
     }
 
     componentDidMount() {
@@ -36,7 +41,9 @@ class App extends React.Component {
                 this.setState({products, productsCount, maxPrice, minPrice, avgPrice, pageNum});
             })
             .catch(response => {
-                console.log(response.message)
+                const error = true;
+                const errorMessage = response.message;
+                this.setState({error, errorMessage});
             });
     }
 
@@ -53,21 +60,20 @@ class App extends React.Component {
     }
 
     render() {
-        console.log(this.state.products);
-        console.log(this.state.productsCount);
-        console.log(this.state.maxPrice);
-        console.log(this.state.minPrice);
-        console.log(this.state.avgPrice);
-        console.log(this.state.pageNum);
+        const content = () => {
+            if (this.state.error) {
+                return `Ошибка: ${this.state.errorMessage}`;
+            }
+            return '';
+        };
+
         return (
             <div id="main">
+                <p className='warning'>{content}</p>
                 <StatusBar productsCount={this.state.productsCount} minPrice={this.state.minPrice} maxPrice={this.state.maxPrice}/>
                 <ProductsInfo products={this.state.products} avgPrice={this.state.avgPrice}/>
-                <Tools pageNum={this.state.pageNum + 1} nextPage={this.onNextPage.bind(this)} previousPage={this.onPreviousPage.bind(this)}/>
+                <Tools pageNum={this.state.pageNum + 1} nextPage={this.onNextPage} previousPage={this.onPreviousPage}/>
             </div>
         )
     }
 }
-
-
-module.exports = App;

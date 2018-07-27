@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ProductInfo extends React.Component {
+export default class ProductInfo extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -27,6 +27,3 @@ class ProductInfo extends React.Component {
         )
     }
 }
-
-
-module.exports = ProductInfo;

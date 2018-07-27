@@ -1,6 +1,6 @@
 import React from 'react';
 
-class StatusBar extends React.Component {
+export default class StatusBar extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -17,6 +17,3 @@ class StatusBar extends React.Component {
         )
     }
 }
-
-
-module.exports = StatusBar;
